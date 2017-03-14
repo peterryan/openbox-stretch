@@ -143,6 +143,50 @@ struct _ObFrame
     Window    trtresize;
     Window    trrresize;
 
+    Window    outerleft;
+    Window    outerright;
+    Window    outertop;
+    Window    outerbottom;
+    Window    outerlefttop;
+    Window    outerrighttop;
+    Window    outerleftbottom;
+    Window    outerrightbottom;
+    Window    outertopleft;
+    Window    outertopright;
+    Window    outerbottomleft;
+    Window    outerbottomright;
+
+    Window    edgeleft;
+    Window    edgeright;
+    Window    edgetop;
+    Window    edgebottom;
+    Window    edgelefttop;
+    Window    edgerighttop;
+    Window    edgeleftbottom;
+    Window    edgerightbottom;
+    Window    edgetopleft;
+    Window    edgetopright;
+    Window    edgebottomleft;
+    Window    edgebottomright;
+
+    Window    ce_tl_t;
+    Window    ce_tl_l;
+    Window    ce_tr_t;
+    Window    ce_tr_r;
+    Window    ce_bl_b;
+    Window    ce_bl_l;
+    Window    ce_br_b;
+    Window    ce_br_r;
+
+    Window    invleft;
+    Window    invright;
+    Window    invtop;
+    Window    invbottom;
+    Window    invtl;
+    Window    invtr;
+    Window    invbl;
+    Window    invbr;
+
     Colormap  colormap;
 
     gint      icon_on;    /* if the window icon button is on */
@@ -167,6 +211,7 @@ struct _ObFrame
     gint      cbwidth_t;     /* client border width */
     gint      cbwidth_r;     /* client border width */
     gint      cbwidth_b;     /* client border width */
+    gint      outer;         /* width of outer border used for rounded corners */
     gboolean  max_horz;      /* when maxed some decorations are hidden */
     gboolean  max_vert;      /* when maxed some decorations are hidden */
     gboolean  shaded;        /* decorations adjust when shaded */
@@ -266,6 +311,9 @@ void frame_flash_stop(ObFrame *self);
   started in the meantime, the callback will never get called. */
 void frame_begin_iconify_animation(ObFrame *self, gboolean iconifying);
 void frame_end_iconify_animation(gpointer data);
+
+void frame_remove_handles (struct _ObClient *self);
+void frame_restore_handles (struct _ObClient *self);
 
 #define frame_iconify_animating(f) (f->iconify_animation_going != 0)
 

@@ -187,6 +187,7 @@ void moveresize_start(ObClient *c, gint x, gint y, guint b, guint32 cnr)
           (c->functions & OB_CLIENT_FUNC_MOVE) :
           (c->functions & OB_CLIENT_FUNC_RESIZE)))
         return;
+    frame_remove_handles (c);
 
     if (cnr == OBT_PROP_ATOM(NET_WM_MOVERESIZE_SIZE_TOPLEFT)) {
         cur = OB_CURSOR_NORTHWEST;
@@ -366,6 +367,7 @@ void moveresize_end(gboolean cancel)
     /* dont edge warp after its ended */
     cancel_edge_warp();
 
+    frame_restore_handles (moveresize_client);
     moveresize_in_progress = FALSE;
     moveresize_client = NULL;
 }

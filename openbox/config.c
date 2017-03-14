@@ -48,6 +48,8 @@ StrutPartial config_margins;
 gchar   *config_theme;
 gboolean config_theme_keepborder;
 guint    config_theme_window_list_icon_size;
+gboolean config_theme_roundcorners;
+gboolean config_theme_invhandles;
 
 gchar   *config_title_layout;
 
@@ -719,6 +721,10 @@ static void parse_theme(xmlNodePtr node, gpointer d)
         else if (config_theme_window_list_icon_size > 96)
             config_theme_window_list_icon_size = 96;
     }
+    if ((n = obt_xml_find_node(node, "roundCorners")))
+        config_theme_roundcorners = obt_xml_node_bool(n);
+    if ((n = obt_xml_find_node(node, "invisibleHandles")))
+        config_theme_invhandles = obt_xml_node_bool(n);
 
     for (n = obt_xml_find_node(node, "font");
          n;
@@ -1098,6 +1104,8 @@ void config_startup(ObtXmlInst *i)
     config_title_layout = g_strdup("NLIMC");
     config_theme_keepborder = TRUE;
     config_theme_window_list_icon_size = 36;
+    config_theme_roundcorners = FALSE;
+    config_theme_invhandles = FALSE;
 
     config_font_activewindow = NULL;
     config_font_inactivewindow = NULL;
