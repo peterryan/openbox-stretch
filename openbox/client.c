@@ -3522,14 +3522,30 @@ void client_maximize(ObClient *self, gboolean max, gint dir)
         }
     }
 
-    if (dir == 0 || dir == 1) /* horz */
+    if (dir == 0)
+    {
         self->max_horz = max;
-    if (dir == 0 || dir == 2) /* vert */
         self->max_vert = max;
+    }
 
     if (max) {
         /* make sure the window is on some monitor */
         client_find_onscreen(self, &x, &y, w, h, FALSE);
+    }
+
+    Rect desired = {x, y, w, h};
+    guint i = screen_find_monitor(&desired);
+    const Rect *a = screen_area(self->desktop, i,
+        (self->max_horz && self->max_vert ? NULL : &desired));
+
+    /* set the size and position if maximized in one dimension */
+    if (max && dir == 1) {
+        x = a->x;
+        w = a->width - self->frame->size.left - self->frame->size.right;
+    }
+    if (max && dir == 2) {
+        y = a->y;
+        h = a->height - self->frame->size.top - self->frame->size.bottom;
     }
 
     client_change_state(self); /* change the state hints on the client */
