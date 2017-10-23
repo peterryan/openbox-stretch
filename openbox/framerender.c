@@ -42,6 +42,7 @@ void framerender_frame(ObFrame *self)
     if (!self->visible)
         return;
     self->need_render = FALSE;
+    frame_remove_handles (self->client);
 
     {
         if ((self->decorations & OB_FRAME_DECOR_TITLEBAR) && !self->max_horz && !self->max_vert && config_theme_roundcorners)
@@ -458,6 +459,8 @@ void framerender_frame(ObFrame *self)
                     ob_rr_theme->grip_width, ob_rr_theme->handle_height);
         }
     }
+
+    if (self->focused) frame_restore_handles (self->client);
 
     XFlush(obt_display);
 }

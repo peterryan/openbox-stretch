@@ -311,8 +311,16 @@ void frame_remove_handles (ObClient *client)
 {
     ObFrame *self = client->frame;
     moving = TRUE;
-    if (config_theme_invhandles)
+    if (config_theme_invhandles && self->invleft)
     {
+        XUnmapWindow (obt_display, self->invleft);
+        XUnmapWindow (obt_display, self->invright);
+        XUnmapWindow (obt_display, self->invtop);
+        XUnmapWindow (obt_display, self->invbottom);
+        XUnmapWindow (obt_display, self->invtl);
+        XUnmapWindow (obt_display, self->invtr);
+        XUnmapWindow (obt_display, self->invbl);
+        XUnmapWindow (obt_display, self->invbr);
         window_remove(self->invleft);
         window_remove(self->invright);
         window_remove(self->invtop);
@@ -329,6 +337,7 @@ void frame_remove_handles (ObClient *client)
         XDestroyWindow(obt_display, self->invtl);
         XDestroyWindow(obt_display, self->invbl);
         XDestroyWindow(obt_display, self->invbr);
+        self->invleft = 0;
     }
 }
 
@@ -345,7 +354,7 @@ void frame_restore_handles (ObClient *client)
         !(self->client->max_horz && self->client->max_vert);
 
     moving = FALSE;
-    if (config_theme_invhandles)
+    if (config_theme_invhandles && self->invleft == 0)
     {
         if (visual)
         {
@@ -1543,31 +1552,6 @@ void frame_adjust_focus(ObFrame *self, gboolean hilite)
     self->focused = hilite;
     self->need_render = TRUE;
     framerender_frame(self);
-    if (config_theme_invhandles)
-    {
-        if (self->focused)
-        {
-            XMapWindow (obt_display, self->invleft);
-            XMapWindow (obt_display, self->invright);
-            XMapWindow (obt_display, self->invtop);
-            XMapWindow (obt_display, self->invbottom);
-            XMapWindow (obt_display, self->invtl);
-            XMapWindow (obt_display, self->invtr);
-            XMapWindow (obt_display, self->invbl);
-            XMapWindow (obt_display, self->invbr);
-        }
-        else
-        {
-            XUnmapWindow (obt_display, self->invleft);
-            XUnmapWindow (obt_display, self->invright);
-            XUnmapWindow (obt_display, self->invtop);
-            XUnmapWindow (obt_display, self->invbottom);
-            XUnmapWindow (obt_display, self->invtl);
-            XUnmapWindow (obt_display, self->invtr);
-            XUnmapWindow (obt_display, self->invbl);
-            XUnmapWindow (obt_display, self->invbr);
-        }
-    }
     XFlush(obt_display);
 }
 
