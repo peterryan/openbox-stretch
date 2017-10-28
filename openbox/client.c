@@ -3522,11 +3522,10 @@ void client_maximize(ObClient *self, gboolean max, gint dir)
         }
     }
 
-    if (dir == 0)
-    {
+    if (dir == 0 || dir == 1) /* horz */
         self->max_horz = max;
+    if (dir == 0 || dir == 2) /* vert */
         self->max_vert = max;
-    }
 
     if (max) {
         /* make sure the window is on some monitor */
